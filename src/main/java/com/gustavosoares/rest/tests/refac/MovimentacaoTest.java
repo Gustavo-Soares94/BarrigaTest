@@ -3,40 +3,17 @@ import com.gustavosoares.rest.core.BaseTest;
 import com.gustavosoares.rest.tests.Movimentacao;
 import com.gustavosoares.rest.utils.DataUtils;
 import io.restassured.RestAssured;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import java.util.HashMap;
-import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class MovimentacaoTest extends BaseTest {
 
-    @BeforeClass
-    public  static void login(){
-        Map<String, String> login = new HashMap<>();
-        login.put("email", "gustavosoares.adm@Outlook.com");
-        login.put("senha", "123456");
-
-        String token = given()
-                .body(login)
-                .when()
-                .post("/signin")
-                .then()
-                .statusCode(200)
-                .extract().path("token")
-                ;
-
-        RestAssured.requestSpecification.header("Authorization", "JWT " + token);
-
-        RestAssured.get("/reset").then().statusCode(200);
-    }
-
     @Test
     public void deveIncluirContaComSucesso(){
 
         given()
-                .body("{ \"nome\": \"Conta inserida\"}")
+                .body("{ \"nome\": \"Nova Conta inserida\"}")
                 .when()
                 .post("/contas")
                 .then()
