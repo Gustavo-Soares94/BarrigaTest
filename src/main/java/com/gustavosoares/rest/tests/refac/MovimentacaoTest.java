@@ -1,8 +1,8 @@
 package com.gustavosoares.rest.tests.refac;
 import com.gustavosoares.rest.core.BaseTest;
 import com.gustavosoares.rest.tests.Movimentacao;
+import com.gustavosoares.rest.utils.BuscasCamposUtils;
 import com.gustavosoares.rest.utils.DataUtils;
-import io.restassured.RestAssured;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -75,7 +75,7 @@ public class MovimentacaoTest extends BaseTest {
 
     @Test
     public void naoDeveRemoverContaComMovimentacao(){
-        Integer conta_id = getIdContaPeloNome("Conta com movimentacao");
+        Integer conta_id = BuscasCamposUtils.getIdContaPeloNome("Conta com movimentacao");
 
         given()
                 .pathParam("id", conta_id)
@@ -89,7 +89,7 @@ public class MovimentacaoTest extends BaseTest {
 
     @Test
     public void deveRemoverMovimentacao(){
-        Integer mov_id = getIdMovimentacaoPelaDescriacao("Movimentacao para exclusao");
+        Integer mov_id = BuscasCamposUtils.getIdMovimentacaoPelaDescriacao("Movimentacao para exclusao");
         given()
                 .pathParam("id", mov_id )
         .when()
@@ -99,17 +99,9 @@ public class MovimentacaoTest extends BaseTest {
         ;
     }
 
-    public Integer getIdContaPeloNome(String nome){
-        return RestAssured.get("/contas?nome="+nome).then().extract().path("id[0]");
-    }
-
-    public Integer getIdMovimentacaoPelaDescriacao(String desc){
-        return RestAssured.get("/transacoes?descricao="+desc).then().extract().path("id[0]");
-    }
-
     private Movimentacao getMovimentacaoValida(){
         Movimentacao mov = new Movimentacao();
-        mov.setConta_id(getIdContaPeloNome("Conta para movimentacoes"));
+        mov.setConta_id(BuscasCamposUtils.getIdContaPeloNome("Conta para movimentacoes"));
         //mov.setUsuario_id();
         mov.setDescricao("Descricao da movimentacao");
         mov.setEnvolvido("Envolvido na mov");

@@ -1,6 +1,6 @@
 package com.gustavosoares.rest.tests.refac;
 import com.gustavosoares.rest.core.BaseTest;
-import io.restassured.RestAssured;
+import com.gustavosoares.rest.utils.BuscasCamposUtils;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -9,7 +9,7 @@ public class SaldoTest extends BaseTest {
 
     @Test
     public void deveCalcularSaldoContas(){
-        Integer conta_id = getIdContaPeloNome("Conta para saldo");
+        Integer conta_id = BuscasCamposUtils.getIdContaPeloNome("Conta para saldo");
         given()
                 .when()
                 .get("/saldo")
@@ -19,8 +19,6 @@ public class SaldoTest extends BaseTest {
         ;
     }
 
-    public Integer getIdContaPeloNome(String nome){
-        return RestAssured.get("/contas?nome="+nome).then().extract().path("id[0]");
-    }
+
 
 }
